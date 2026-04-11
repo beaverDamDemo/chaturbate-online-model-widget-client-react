@@ -1,3 +1,60 @@
+import { useQuery as useUsersQuery } from '@tanstack/react-query'
+import { fetchAllUsers } from '../features/admin/fetch-users'
+import type { AdminUser } from '../features/admin/fetch-users'
+// --- Admin Users Table ---
+function AdminUsersTable({ users }: { users: AdminUser[] }) {
+  // Sort so ADMIN users appear first
+  const sortedUsers = [...users].sort((a, b) => {
+    const roleA = (a.role ?? 'USER').toUpperCase();
+    const roleB = (b.role ?? 'USER').toUpperCase();
+    if (roleA === 'ADMIN' && roleB !== 'ADMIN') return -1;
+    if (roleA !== 'ADMIN' && roleB === 'ADMIN') return 1;
+    return 0;
+  });
+  return (
+    <section className="glass-panel overflow-hidden rounded-[2rem] shadow-[0_24px_70px_rgba(146,64,14,0.12)] mb-8">
+      <div className="border-b border-stone-200/70 px-6 py-5 sm:px-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-stone-500">
+          All users
+        </p>
+        <p className="mt-2 text-sm text-stone-600">
+          A list of all users in the database.
+        </p>
+      </div>
+      {sortedUsers.length ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-stone-200/70 bg-white/40 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">
+                <th className="px-4 py-3 sm:px-6">ID</th>
+                <th className="px-4 py-3 sm:px-6">Name</th>
+                <th className="px-4 py-3 sm:px-6">Email</th>
+                <th className="px-4 py-3 sm:px-6">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedUsers.map((user) => (
+                <tr
+                  key={user.id}
+                  className="border-b border-stone-200/70 align-middle text-sm text-stone-600 transition-colors hover:bg-white/25"
+                >
+                  <td className="px-4 py-3 sm:px-6">{user.id}</td>
+                  <td className="px-4 py-3 sm:px-6">{user.name}</td>
+                  <td className="px-4 py-3 sm:px-6">{user.email}</td>
+                  <td className="px-4 py-3 sm:px-6">{user.role ?? 'USER'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="px-6 py-6 text-sm text-stone-600 sm:px-8">
+          No users found.
+        </div>
+      )}
+    </section>
+  )
+}
 
 
 import { useQuery } from '@tanstack/react-query'
@@ -7,6 +64,12 @@ import { fetchAdminStats } from '../features/admin/fetch-admin-stats.ts'
 type StatsRecord = Record<string, unknown>
 
 export function AdminPanelPage() {
+    // Fetch all users for admin
+    const { data: users } = useUsersQuery({
+      queryKey: ['admin-users'],
+      queryFn: fetchAllUsers,
+      refetchInterval: 300_000,
+    })
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['admin-stats'],
     queryFn: fetchAdminStats,
@@ -67,6 +130,10 @@ export function AdminPanelPage() {
           {isError ? errorMessage : 'Data is coming from GET /api/admin/stats.'}
         </p>
       </div>
+
+
+      {/* Users table (admin only) */}
+      <AdminUsersTable users={users ?? []} />
 
       {/* Room stats table (favorites style) */}
       {roomStats && <AdminRoomFavoritesTable rooms={roomStats} />}

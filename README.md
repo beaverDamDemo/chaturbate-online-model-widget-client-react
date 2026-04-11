@@ -1,3 +1,52 @@
+# How the Website Works
+
+## Overview
+
+This web application is a modern React frontend for managing and viewing Chaturbate model data, with user authentication, favorites, and an admin dashboard. It is designed to work with a Spring Boot backend using JWT authentication.
+
+## User Flow
+
+- **Registration & Login:**
+  - Users can register with a name, email, and password, or log in with existing credentials.
+  - Upon login or registration, a JWT access token is stored in local storage for authenticated API requests.
+
+- **Favorites:**
+  - Authenticated users can view a list of models and mark/unmark them as favorites.
+  - The favorites list is fetched from the backend and automatically refreshes every 2 minutes, or when the browser window regains focus.
+
+- **Account Management:**
+  - Users can view their account details and delete their own account from the account page.
+  - Deleting an account removes the user from the database and logs them out.
+
+## Admin Features
+
+- **Admin Panel:**
+  - Accessible only to users with the admin role.
+  - Displays a table of all rooms with their stats (room name, favorite count), styled for clarity and consistency.
+  - Shows a table of all users in the database, including their ID, name, email, and role.
+  - Data in the admin panel is refreshed automatically every 5 minutes.
+
+## Data Fetching & Refresh
+
+- All API requests are made using React Query for efficient caching and background updates.
+- The favorites list and admin data are periodically refreshed to ensure up-to-date information.
+- The app uses a Vite proxy for local development, so API requests go to the backend seamlessly.
+
+## Technologies Used
+
+- React, Vite, TypeScript
+- Tailwind CSS for styling
+- React Router for navigation
+- React Query for data fetching and caching
+
+## Quick Start
+
+1. Install dependencies: `npm install`
+2. Start the development server: `npm run dev`
+3. The app runs at `http://localhost:3000` and expects a backend at `http://localhost:8080` (proxied via Vite).
+
+For more details, see the sections below.
+
 # Chaturbate Online Model Widget Client
 
 Starter frontend scaffold built with React, Vite, TypeScript, Tailwind CSS, React Router, and React Query.
