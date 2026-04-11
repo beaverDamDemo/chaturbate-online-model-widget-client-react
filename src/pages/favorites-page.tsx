@@ -1,4 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+// --- Notification helpers ---
+function requestNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function showFavoriteOnlineNotification(roomName: string) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('Favorite is online!', {
+      body: `${roomName} just came online.`,
+      icon: '/favicon.svg',
+    });
+  }
+}
 import type { FormEvent } from 'react'
 import { useFavorites } from '../features/favorites/use-favorites.ts'
 
@@ -8,18 +23,41 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 })
 
 export function FavoritesPage() {
-  const {
-    favorites,
-    createFavorite,
-    removeFavorite,
-    isLoading,
-    isError,
-    errorMessage,
-    actionErrorMessage,
-    isCreating,
-    isRemoving,
-    activeRoomName,
-  } = useFavorites()
+    const {
+      favorites,
+      createFavorite,
+      removeFavorite,
+      isLoading,
+      isError,
+      errorMessage,
+      actionErrorMessage,
+      isCreating,
+      isRemoving,
+      activeRoomName,
+    } = useFavorites()
+
+    // Request notification permission on mount
+    useEffect(() => {
+      requestNotificationPermission();
+    }, []);
+
+    // Track previous favorites to detect new online favorites
+    const prevFavoritesRef = useRef<typeof favorites>([]);
+    useEffect(() => {
+      if (!favorites.length) {
+        prevFavoritesRef.current = favorites;
+        return;
+      }
+      const prev = prevFavoritesRef.current;
+      // Find favorites that are now online but were offline before
+      const newlyOnline = favorites.filter(fav => {
+        if (!fav.online) return false;
+        const prevFav = prev.find(p => p.id === fav.id);
+        return prevFav && !prevFav.online;
+      });
+      newlyOnline.forEach(fav => showFavoriteOnlineNotification(fav.roomName));
+      prevFavoritesRef.current = favorites;
+    }, [favorites]);
   const [roomName, setRoomName] = useState('')
   const [formErrorMessage, setFormErrorMessage] = useState('')
 
@@ -167,6 +205,8 @@ export function FavoritesPage() {
                   <th className="px-4 py-3 sm:px-6">Status Checked</th>
                   <th className="px-4 py-3 sm:px-6">Added</th>
                   <th className="px-4 py-3 text-right sm:px-6">Action</th>
+                  <th className="px-4 py-3 text-right sm:px-6">Link</th>
+                  <th className="px-4 py-3 text-right sm:px-6">Statbate</th>
                 </tr>
               </thead>
               <tbody>
@@ -228,6 +268,56 @@ export function FavoritesPage() {
                             </svg>
                           )}
                         </button>
+                      </td>
+                      <td className="px-4 py-2 text-right sm:px-6">
+                        <a
+                          href={`https://chaturbate.com/${favorite.roomName}/`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${favorite.roomName} on Chaturbate`}
+                          title="Open room in new tab"
+                          className="icon-link-button ml-auto flex h-8 w-8 items-center justify-center rounded-full text-amber-700 hover:bg-amber-100"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M10 14L21 3" />
+                            <path d="M21 3h-7m7 0v7" />
+                            <path d="M21 21H3V3h7" />
+                          </svg>
+                        </a>
+                      </td>
+                      <td className="px-4 py-2 text-right sm:px-6">
+                        <a
+                          href={`https://statbate.com/search/1/${favorite.roomName}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${favorite.roomName} on Statbate`}
+                          title="Open Statbate search in new tab"
+                          className="icon-link-button ml-auto flex h-8 w-8 items-center justify-center rounded-full text-blue-700 hover:bg-blue-100"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12" y2="8" />
+                          </svg>
+                        </a>
                       </td>
                     </tr>
                   )
