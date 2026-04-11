@@ -1,3 +1,5 @@
+
+
 import { useQuery } from '@tanstack/react-query'
 import { ApiError } from '../lib/api-client.ts'
 import { fetchAdminStats } from '../features/admin/fetch-admin-stats.ts'
@@ -18,6 +20,12 @@ export function AdminPanelPage() {
   const complexEntries = Object.entries(data ?? {}).filter(([, value]) =>
     value !== null && typeof value === 'object',
   )
+
+  // --- Find and render room stats as favorites-style table ---
+  // Look for a room stats array in the admin stats data
+  const roomStats = complexEntries.find(([, value]) =>
+    Array.isArray(value) && value.length && typeof value[0] === 'object' && 'roomName' in value[0] && 'favoriteCount' in value[0]
+  )?.[1] as { roomName: string, favoriteCount: number }[] | undefined;
 
   const errorMessage =
     error instanceof ApiError && error.status === 403
@@ -60,6 +68,9 @@ export function AdminPanelPage() {
         </p>
       </div>
 
+      {/* Room stats table (favorites style) */}
+      {roomStats && <AdminRoomFavoritesTable rooms={roomStats} />}
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {scalarEntries.length ? (
           scalarEntries.map(([key, value]) => (
@@ -74,19 +85,89 @@ export function AdminPanelPage() {
 
       {complexEntries.length ? (
         <div className="grid gap-4 xl:grid-cols-2">
-          {complexEntries.map(([key, value]) => (
-            <article
-              key={key}
-              className="glass-panel rounded-[1.75rem] p-6 text-sm text-stone-600 shadow-[0_16px_40px_rgba(146,64,14,0.1)]"
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-stone-500">
-                {formatLabel(key)}
-              </p>
-              <div className="mt-4">{renderComplexValue(key, value)}</div>
-            </article>
-          ))}
+          {complexEntries
+            .filter(([, value]) => {
+              // Remove the room stats entry if it matches the one used for the upper table
+              if (roomStats && Array.isArray(value) && value === roomStats) return false;
+              if (
+                Array.isArray(value) &&
+                value.length &&
+                typeof value[0] === 'object' &&
+                'roomName' in value[0] &&
+                'favoriteCount' in value[0]
+              ) {
+                // Also filter out any other array with the same shape
+                return false;
+              }
+              return true;
+            })
+            .map(([key, value]) => (
+              <article
+                key={key}
+                className="glass-panel rounded-[1.75rem] p-6 text-sm text-stone-600 shadow-[0_16px_40px_rgba(146,64,14,0.1)]"
+              >
+                <p className="text-sm font-semibold uppercase tracking-[0.25em] text-stone-500">
+                  {formatLabel(key)}
+                </p>
+                <div className="mt-4">{renderComplexValue(key, value)}</div>
+              </article>
+            ))}
         </div>
       ) : null}
+    </section>
+  )
+}
+
+// --- Admin Room Stats Table (Favorites Style) ---
+function AdminRoomFavoritesTable({ rooms }: { rooms: { roomName: string, favoriteCount: number, online?: boolean, statusCheckedAt?: string, createdAt?: string }[] }) {
+  const sortedRooms = [...rooms].sort((a, b) =>
+    (a.roomName ?? '').localeCompare(b.roomName ?? '', undefined, { sensitivity: 'base' })
+  );
+  return (
+    <section className="glass-panel overflow-hidden rounded-[2rem] shadow-[0_24px_70px_rgba(146,64,14,0.12)] mb-8">
+      <div className="border-b border-stone-200/70 px-6 py-5 sm:px-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-stone-500">
+          Room stats
+        </p>
+        <p className="mt-2 text-sm text-stone-600">
+          A compact overview of all rooms and their favorite counts.
+        </p>
+      </div>
+      {sortedRooms.length ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-stone-200/70 bg-white/40 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">
+                <th className="px-4 py-3 sm:px-6">Room</th>
+                <th className="px-4 py-3 sm:px-6">Favorite Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedRooms.map((room, i) => (
+                <tr
+                  key={room.roomName ?? i}
+                  className="border-b border-stone-200/70 align-middle text-sm text-stone-600 transition-colors hover:bg-white/25"
+                >
+                  <td className="px-4 py-3 sm:px-6">
+                    <div className="min-w-36">
+                      <p className="font-semibold text-stone-950">{room.roomName}</p>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 sm:px-6">
+                    <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[13px] font-semibold text-amber-800">
+                      {room.favoriteCount}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="px-6 py-6 text-sm text-stone-600 sm:px-8">
+          No room stats were returned by the backend yet.
+        </div>
+      )}
     </section>
   )
 }
