@@ -10,7 +10,7 @@ type BackendProbePanelProps = {
 
 export function BackendProbePanel({
   title = 'Call a sample backend endpoint from the frontend.',
-  description = 'Use this to quickly test a Spring Boot endpoint such as /health, /status, /sample, or any other GET path exposed through the frontend proxy.',
+  description = 'Use this to quickly test a Spring Boot endpoint such as /health or any other GET path exposed through the frontend proxy.',
 }: BackendProbePanelProps) {
   const [probePath, setProbePath] = useState('/health')
   const backendProbe = useMutation({
@@ -70,46 +70,26 @@ export function BackendProbePanel({
         </p>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="rounded-[1.5rem] border border-stone-200 bg-white/70 p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-stone-500">
-            Suggested paths
+      {/* Suggested paths removed as requested */}
+
+      <div className="rounded-[1.5rem] border border-stone-200 bg-stone-950 p-5 text-stone-100 shadow-inner">
+        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-stone-400">
+          Last response
+        </p>
+        {probeErrorMessage ? (
+          <p className="mt-4 rounded-2xl border border-rose-500/30 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">
+            {probeErrorMessage}
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {['/health', '/status', '/sample', '/actuator/health'].map((path) => (
-              <button
-                key={path}
-                type="button"
-                onClick={() => setProbePath(path)}
-                className="chip-button rounded-full px-3 py-2 text-xs font-semibold"
-              >
-                {path}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-[1.5rem] border border-stone-200 bg-stone-950 p-5 text-stone-100 shadow-inner">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-stone-400">
-            Last response
+        ) : null}
+        {probeResult ? (
+          <pre className="mt-4 overflow-x-auto whitespace-pre-wrap rounded-2xl bg-stone-900/80 p-4 text-xs leading-6 text-emerald-200">
+            {probeResult}
+          </pre>
+        ) : !probeErrorMessage ? (
+          <p className="mt-4 text-sm text-stone-300">
+            Click the button to make a sample GET request through the frontend API client.
           </p>
-
-          {probeErrorMessage ? (
-            <p className="mt-4 rounded-2xl border border-rose-500/30 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">
-              {probeErrorMessage}
-            </p>
-          ) : null}
-
-          {probeResult ? (
-            <pre className="mt-4 overflow-x-auto whitespace-pre-wrap rounded-2xl bg-stone-900/80 p-4 text-xs leading-6 text-emerald-200">
-              {probeResult}
-            </pre>
-          ) : !probeErrorMessage ? (
-            <p className="mt-4 text-sm text-stone-300">
-              Click the button to make a sample GET request through the frontend API client.
-            </p>
-          ) : null}
-        </div>
+        ) : null}
       </div>
     </div>
   )

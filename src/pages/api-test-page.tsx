@@ -17,7 +17,7 @@ export function ApiTestPage() {
 
       <BackendProbePanel
         title="Probe the backend from a public route."
-        description="Try a GET endpoint such as /health or /actuator/health. This does not require frontend login because this page is outside the protected routes."
+        description="Try a GET endpoint such as /health. This does not require frontend login because this page is outside the protected routes."
       />
     </section>
   )
