@@ -2,8 +2,9 @@ const ACCESS_TOKEN_STORAGE_KEY = 'cmw-access-token';
 const BACKEND_TOKEN_STORAGE_KEY = 'token';
 
 let accessToken =
-  window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) ??
-  window.localStorage.getItem(BACKEND_TOKEN_STORAGE_KEY);
+  typeof window !== 'undefined' && window.localStorage
+    ? window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) ?? window.localStorage.getItem(BACKEND_TOKEN_STORAGE_KEY)
+    : null;
 
 export function getAccessToken() {
   return accessToken;
@@ -11,12 +12,16 @@ export function getAccessToken() {
 
 export function setAccessToken(token: string) {
   accessToken = token;
-  window.localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
-  window.localStorage.setItem(BACKEND_TOKEN_STORAGE_KEY, token);
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
+    window.localStorage.setItem(BACKEND_TOKEN_STORAGE_KEY, token);
+  }
 }
 
 export function clearAccessToken() {
   accessToken = null;
-  window.localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-  window.localStorage.removeItem(BACKEND_TOKEN_STORAGE_KEY);
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+    window.localStorage.removeItem(BACKEND_TOKEN_STORAGE_KEY);
+  }
 }
