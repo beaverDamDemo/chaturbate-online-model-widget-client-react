@@ -1,6 +1,15 @@
+
 import { NavLink, Outlet } from 'react-router-dom'
 import { useTheme } from './app/theme-context.tsx'
 import { useAuth } from './features/auth/auth-context.tsx'
+
+function LogOutIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...props} viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8c-1.1 0-2 .9-2 2v4h2V5h8v14h-8v-4h-2v4c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" fill="currentColor"/>
+    </svg>
+  );
+}
 
 function App() {
   const { user, isAdmin, signOut } = useAuth()
@@ -53,15 +62,17 @@ function App() {
               {user ? null : <NavItem to="/login" label="Login" />}
             </nav>
 
-            {user ? (
-              <button
-                type="button"
-                onClick={signOut}
-                className="secondary-button rounded-full px-4 py-2 text-sm font-semibold"
-              >
-                Log out
-              </button>
-            ) : null}
+              {user ? (
+                <button
+                  type="button"
+                  onClick={signOut}
+                  className="secondary-button flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                  aria-label="Log out"
+                  title="Log out"
+                >
+                  <LogOutIcon className="w-5 h-5" />
+                </button>
+              ) : null}
           </div>
         </header>
 
