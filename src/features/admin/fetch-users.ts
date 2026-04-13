@@ -8,5 +8,5 @@ export type AdminUser = {
 };
 
 export async function fetchAllUsers() {
-  return apiRequest<AdminUser[]>('/admin/users');
+  return apiRequest<AdminUser[]>('/api/admin/users');
 }

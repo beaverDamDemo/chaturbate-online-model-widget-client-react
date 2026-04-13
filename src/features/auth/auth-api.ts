@@ -48,12 +48,12 @@ function normalizeLoginResponse(payload: LoginResponse) {
 }
 
 export async function fetchCurrentUser() {
-  const response = await apiRequest<CurrentUserResponse>('/auth/me');
+  const response = await apiRequest<CurrentUserResponse>('/api/auth/me');
   return normalizeUser(response);
 }
 
 export async function login(email: string, password: string) {
-  const response = await apiRequest<LoginResponse>('/auth/login', {
+  const response = await apiRequest<LoginResponse>('/api/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
@@ -62,7 +62,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function register(input: RegisterInput) {
-  const response = await apiRequest<LoginResponse>('/auth/register', {
+  const response = await apiRequest<LoginResponse>('/api/auth/register', {
     method: 'POST',
     body: JSON.stringify(input),
   });
@@ -71,13 +71,13 @@ export async function register(input: RegisterInput) {
 }
 
 export async function logout() {
-  await apiRequest<null>('/auth/logout', {
+  await apiRequest<null>('/api/auth/logout', {
     method: 'POST',
   });
 }
 
 export async function deleteCurrentAccount(password: string) {
-  await apiRequest<null>('/auth/me', {
+  await apiRequest<null>('/api/auth/me', {
     method: 'DELETE',
     body: JSON.stringify({ password }),
   });

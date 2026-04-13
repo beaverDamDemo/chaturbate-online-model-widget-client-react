@@ -23,7 +23,7 @@ export async function addFavorite(roomName: string) {
 }
 
 export async function removeFavorite(roomName: string) {
-  await apiRequest<null>(`/favorites/${encodeURIComponent(normalizeRoomName(roomName))}`, {
+  await apiRequest<null>(`/api/favorites/${encodeURIComponent(normalizeRoomName(roomName))}`, {
     method: 'DELETE',
   });
 }
