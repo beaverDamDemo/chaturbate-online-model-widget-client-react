@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { AuthProvider } from './features/auth/auth-context';
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -11,14 +11,22 @@ const createTestQueryClient = () =>
     },
   });
 
-export function renderWithProviders(ui, { queryClient, ...options } = {}) {
-  if (!queryClient) {
-    queryClient = createTestQueryClient();
-  }
+/**
+ * Async utility to render with all providers, using dynamic import for AuthProvider.
+ * Usage: await renderWithProviders(<Component />)
+ */
+
+
+import { AuthProvider } from './features/auth/auth-context';
+
+export function renderWithProviders(ui, options) {
+  const queryClient = createTestQueryClient();
   return render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>{ui}</AuthProvider>
+        <AuthProvider>
+          {ui}
+        </AuthProvider>
       </QueryClientProvider>
     </MemoryRouter>,
     options
