@@ -37,14 +37,15 @@ function App() {
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold"
-              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
-            </button>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none"
+                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
+              >
+                <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
+              </button>
 
             {user ? (
               <div className="rounded-2xl border border-stone-200/70 bg-white/80 px-4 py-3 text-sm shadow-sm">
@@ -66,9 +67,10 @@ function App() {
                 <button
                   type="button"
                   onClick={signOut}
-                  className="secondary-button flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                  className="secondary-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none"
                   aria-label="Log out"
                   title="Log out"
+                  style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
                 >
                   <LogOutIcon className="w-5 h-5" />
                 </button>
