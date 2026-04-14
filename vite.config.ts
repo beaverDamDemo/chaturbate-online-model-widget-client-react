@@ -7,28 +7,7 @@ import babel from '@rolldown/plugin-babel';
 export default defineConfig({
   server: {
     port: 3000,
-    proxy: {
-      '/actuator': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/health': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/sample': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/status': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-    },
+    // Proxy removed to allow direct API calls to live backend via VITE_API_BASE_URL
   },
   plugins: [
     react(),

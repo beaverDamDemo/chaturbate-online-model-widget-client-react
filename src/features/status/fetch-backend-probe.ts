@@ -13,6 +13,6 @@ function normalizePath(path: string) {
 export async function fetchBackendProbe(path: string) {
   return apiRequest<unknown>(normalizePath(path), {
     includeAuth: false,
-    useApiBase: false,
+    useApiBase: true,
   });
 }
