@@ -80,12 +80,12 @@ npm install react-router-dom @tanstack/react-query tailwindcss @tailwindcss/vite
 npm run dev
 ```
 
-Vite now runs on `http://localhost:3000` and proxies `/api` requests to `http://localhost:8080` during development.
+Vite now runs on `http://localhost:3000` and proxies ``requests to`http://localhost:8080` during development.
 
 Environment files included:
 
-- `.env.development` uses `VITE_API_BASE_URL=/api` so local requests go through the Vite proxy to `http://localhost:8080`.
-- `.env.production` also defaults to `VITE_API_BASE_URL=/api` for same-domain deployments.
+- `.env.development` uses `VITE_API_BASE_URL=` so local requests go through the Vite proxy to `http://localhost:8080`.
+- `.env.production` also defaults to `VITE_API_BASE_URL=` for same-domain deployments.
 - If your live API is hosted on a different domain, update `.env.production` to your full API URL before building.
 
 ## Build
@@ -114,24 +114,24 @@ src/
 
 ## JWT Auth Flow
 
-1. The login request posts credentials to `/api/auth/login`.
-2. The register request posts name, email, and password to `/api/auth/register`.
+1. The login request posts credentials to `/auth/login`.
+2. The register request posts name, email, and password to `/auth/register`.
 3. The backend returns an access token and user payload for either login or register.
 4. The frontend stores the access token in local storage.
 5. Every authenticated request sends `Authorization: Bearer <token>`.
-6. On app load, the frontend calls `/api/auth/me` if a token is present.
+6. On app load, the frontend calls `/auth/me` if a token is present.
 
 ## Expected Backend Endpoints
 
 ```text
-POST   /api/auth/login
-POST   /api/auth/register
-GET    /api/auth/me
-DELETE /api/auth/me
-POST   /api/auth/logout
-GET    /api/favorites
-PUT    /api/favorites/:id
-GET    /api/dashboard/status
+POST   /auth/login
+POST   /auth/register
+GET    /auth/me
+DELETE /auth/me
+POST   /auth/logout
+GET    /favorites
+PUT    /favorites/:id
+GET    /dashboard/status
 ```
 
 ## Expected Payload Shapes
