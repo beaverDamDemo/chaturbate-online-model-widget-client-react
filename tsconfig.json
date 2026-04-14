@@ -3,6 +3,5 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "src/**/*.test.tsx", "src/**/*.test.ts"]
+  ]
 }
