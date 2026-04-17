@@ -11,7 +11,7 @@ export type FavoriteModel = {
 };
 
 export async function fetchFavoriteModels() {
-  return apiRequest<FavoriteModel[]>('/favorites');
+  return apiRequest<FavoriteModel[]>('/api/favorites');
 }
 
 export async function updateFavorite(modelId: string, favorite: boolean) {

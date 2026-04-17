@@ -9,7 +9,7 @@ export function useFavorites() {
   const favoritesQuery = useQuery({
     queryKey: FAVORITES_QUERY_KEY,
     queryFn: getFavorites,
-    refetchInterval: 120_000,
+    refetchInterval: 600_000, // 10 minutes - refetch while on favorites page
     refetchOnWindowFocus: true,
   });
 

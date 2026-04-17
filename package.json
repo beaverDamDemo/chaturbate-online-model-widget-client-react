@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "dev": "vite",
+    "dev": "vite --mode localhost",
+    "dev:live": "vite --mode live",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

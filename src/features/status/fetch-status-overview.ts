@@ -19,5 +19,5 @@ export type StatusOverview = {
 };
 
 export async function fetchStatusOverview(): Promise<StatusOverview> {
-  return apiRequest<StatusOverview>('/dashboard/status');
+  return apiRequest<StatusOverview>('/api/dashboard/status');
 }
