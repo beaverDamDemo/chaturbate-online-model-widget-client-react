@@ -8,12 +8,14 @@ import { AccountPage } from '../pages/account-page.tsx'
 import { FavoritesPage } from '../pages/favorites-page.tsx'
 import { LoginPage } from '../pages/login-page.tsx'
 import { RegisterPage } from '../pages/register-page.tsx'
+import { NotFoundPage } from '../pages/not-found-page.tsx'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      // Authenticated home
       {
         element: <RequireAuth />,
         children: [
@@ -23,6 +25,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      // Public routes
       {
         path: 'login',
         element: <LoginPage />,
@@ -35,6 +38,7 @@ export const router = createBrowserRouter([
         path: 'api-test',
         element: <ApiTestPage />,
       },
+      // Authenticated sub-routes
       {
         element: <RequireAuth />,
         children: [
@@ -42,7 +46,6 @@ export const router = createBrowserRouter([
             // path: 'dashboard',
             // element: <StatusDashboardPage />,
           },
-          // Removed /favorites route; now handled as index route
           {
             path: 'account',
             element: <AccountPage />,
@@ -57,6 +60,11 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      // Unprotected catch-all 404 route as last child
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },
