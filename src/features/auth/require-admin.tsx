@@ -13,7 +13,7 @@ export function RequireAdmin() {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/" replace />
   }
 
   return <Outlet />

@@ -153,7 +153,6 @@ DELETE /auth/me
 POST   /auth/logout
 GET    /favorites
 PUT    /favorites/:id
-GET    /dashboard/status
 ```
 
 ## Expected Payload Shapes
@@ -216,7 +215,3 @@ The login and register responses may also use `token` instead of `accessToken`, 
   ]
 }
 ```
-
-TEMPORARY
-cd "C:\Users\Fjasdojf\Documents\dev\chaturbate-online-model-widget\chaturbate-online-model-widget-client-react"
-npm run dev

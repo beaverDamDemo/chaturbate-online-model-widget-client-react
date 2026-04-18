@@ -14,7 +14,7 @@ export function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/" replace />
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ export function RegisterPage() {
 
     try {
       await signUp({ name, email, password })
-      void navigate('/dashboard', { replace: true })
+      void navigate('/', { replace: true })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Unable to register.')
     } finally {
@@ -45,7 +45,7 @@ export function RegisterPage() {
           New Account
         </p>
         <h2 className="mt-4 font-display text-5xl leading-none text-stone-950">
-          Create an operator account for dashboard access.
+          Create an operator account.
         </h2>
         <p className="mt-5 max-w-xl text-base text-stone-600">
           Registration posts to your Spring Boot backend, expects a JWT in the response, and immediately signs the new user into the app.
@@ -54,7 +54,7 @@ export function RegisterPage() {
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <StatCard label="Endpoint" value="/api/auth/register" />
           <StatCard label="Auth" value="JWT bearer" />
-          <StatCard label="Redirect" value="/dashboard" />
+          <StatCard label="Redirect" value="/" />
         </div>
       </div>
 

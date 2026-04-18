@@ -43,10 +43,6 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           {
-            // path: 'dashboard',
-            // element: <StatusDashboardPage />,
-          },
-          {
             path: 'account',
             element: <AccountPage />,
           },

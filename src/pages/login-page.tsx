@@ -12,7 +12,7 @@ export function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const nextPath = (location.state as { from?: string } | null)?.from ?? '/dashboard'
+  const nextPath = (location.state as { from?: string } | null)?.from ?? '/'
 
   if (isAuthenticated) {
     return <Navigate to={nextPath} replace />
@@ -97,7 +97,7 @@ export function LoginPage() {
           disabled={isSubmitting || isLoading}
           className="primary-button w-full rounded-full px-5 py-3 text-sm font-semibold"
         >
-          {isSubmitting || isLoading ? 'Signing in...' : 'Open dashboard'}
+          {isSubmitting || isLoading ? 'Signing in...' : 'Sign in'}
         </button>
 
         <p className="mt-5 text-sm text-stone-600">
