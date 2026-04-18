@@ -64,47 +64,46 @@ The frontend is now prepared to talk to a local Spring Boot backend using JWT be
 
 ## Install
 
-```bash
+This web application is a modern React frontend for managing and viewing Chaturbate model data, with user authentication, favorites, and an admin panel. It is designed to work with a Spring Boot backend using JWT authentication.
 npm install
-```
 
+````
 The current scaffold already includes these packages:
 
-```bash
-npm install react-router-dom @tanstack/react-query tailwindcss @tailwindcss/vite
-```
+
+- **Home (Favorites) Page:**
+  - The landing page displays the user's favorite models and allows marking/unmarking favorites.
+  - The favorites list is fetched from the backend and automatically refreshes every 2 minutes, or when the browser window regains focus.
 
 ## Run
-
 ```bash
 npm run dev
-```
+````
 
-Vite now runs on `http://localhost:3000` and proxies ``requests to`http://localhost:8080` during development.
-
-Environment files included:
-
-- `.env.development` uses `VITE_API_BASE_URL=` so local requests go through the Vite proxy to `http://localhost:8080`.
+- **Admin Panel:**
+  - Accessible only to users with the admin role.
+  - Displays a table of all rooms with their stats (room name, favorite count), styled for clarity and consistency.
+  - Shows a table of all users in the database, including their ID, name, email, and role.
+  - Shows platform-wide metrics such as "Active models" and "Online favorites" at the top.
+  - Data in the admin panel is refreshed automatically every 5 minutes.
 - `.env.production` also defaults to `VITE_API_BASE_URL=` for same-domain deployments.
 - If your live API is hosted on a different domain, update `.env.production` to your full API URL before building.
+- React Router for navigation (logo in header navigates home)
+  npm run build
 
-## Build
-
-```bash
-npm run build
-```
+````
 
 ## Folder Guide
 
 ```text
-src/
-  app/               Router and React Query client
-  features/
+GET    /favorites
+PUT    /favorites/:id
+GET    /admin/stats
     auth/            Demo auth context and route guard
     favorites/       Favorites data and local storage hook
     status/          Mock dashboard API
   pages/             Login, favorites, and dashboard pages
-```
+````
 
 ## Next Replacements
 
@@ -124,6 +123,29 @@ src/
 ## Expected Backend Endpoints
 
 ```text
+  "activeModels": 18,
+  "onlineFavorites": 7,
+  "alerts": [
+    {
+      "id": "alert-1",
+      "title": "Schedule drift detected",
+      "tone": "watch",
+      "detail": "Two streams started late."
+    }
+  ],
+  "timeline": [
+    {
+      "hour": "12:00",
+      "viewers": 120,
+      "revenue": 55
+    }
+  ]
+# UI/Navigation Notes
+
+- The landing (home) page is now the favorites page.
+- The navigation bar no longer includes a separate "Favorites" link.
+- The logo in the header (favicon) is clickable and always navigates home.
+- The light/dark theme toggle is in the header, next to the log out button (right side).
 POST   /auth/login
 POST   /auth/register
 GET    /auth/me

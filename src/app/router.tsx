@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        // element: <Navigate to="/dashboard" replace />,
+        element: <FavoritesPage />,
       },
       {
         path: 'login',
@@ -37,10 +37,7 @@ export const router = createBrowserRouter([
             // path: 'dashboard',
             // element: <StatusDashboardPage />,
           },
-          {
-            path: 'favorites',
-            element: <FavoritesPage />,
-          },
+          // Removed /favorites route; now handled as index route
           {
             path: 'account',
             element: <AccountPage />,

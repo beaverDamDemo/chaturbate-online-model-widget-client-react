@@ -19,34 +19,29 @@ function App() {
     <div className="theme-shell min-h-screen">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8">
         <header className="glass-panel flex flex-col gap-5 rounded-[2rem] px-6 py-5 shadow-[0_30px_80px_rgba(120,53,15,0.12)] sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.38em] text-amber-700/80">
-              Model Widget Control Room
-            </p>
-            <div className="mt-3 flex items-end gap-3">
-              <h1 className="font-display text-3xl leading-none sm:text-4xl">
-                Creator Ops Starter
-              </h1>
-              <span className="rounded-full border border-amber-900/10 bg-white/70 px-3 py-1 text-xs font-semibold text-stone-600">
-                v0.0.0
-              </span>
+          <div className="flex items-center gap-4">
+            <NavLink to="/" className="focus:outline-none" aria-label="Go to home page">
+              <img src="/favicon.svg" alt="Home" className="h-12 w-12 rounded-xl border border-stone-200 shadow-sm transition-opacity hover:opacity-80" />
+            </NavLink>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.38em] text-amber-700/80">
+                Model Widget Control Room
+              </p>
+              <div className="mt-3 flex items-end gap-3">
+                <h1 className="font-display text-3xl leading-none sm:text-4xl">
+                  Creator Ops Starter
+                </h1>
+                <span className="rounded-full border border-amber-900/10 bg-white/70 px-3 py-1 text-xs font-semibold text-stone-600">
+                  v0.0.0
+                </span>
+              </div>
+              <p className="mt-3 max-w-2xl text-sm text-stone-600 sm:text-base">
+                Boilerplate for auth, favorites management, and a live status dashboard.
+              </p>
             </div>
-            <p className="mt-3 max-w-2xl text-sm text-stone-600 sm:text-base">
-              Boilerplate for auth, favorites management, and a live status dashboard.
-            </p>
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none"
-                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
-              >
-                <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
-              </button>
-
             {user ? (
               <div className="rounded-2xl border border-stone-200/70 bg-white/80 px-4 py-3 text-sm shadow-sm">
                 <p className="font-semibold text-stone-900">{user.name}</p>
@@ -56,13 +51,22 @@ function App() {
 
             <nav className="flex flex-wrap gap-2">
               <NavItem to="/api-test" label="API Test" />
-              <NavItem to="/favorites" label="Favorites" />
               {user ? <NavItem to="/account" label="Account" /> : null}
               {user ? <AdminNavItem isAdmin={isAdmin} /> : null}
               {user ? null : <NavItem to="/login" label="Login" />}
             </nav>
 
-              {user ? (
+            {user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none mr-2"
+                  aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                  style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
+                >
+                  <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
+                </button>
                 <button
                   type="button"
                   onClick={signOut}
@@ -73,7 +77,18 @@ function App() {
                 >
                   <LogOutIcon className="w-5 h-5" />
                 </button>
-              ) : null}
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none"
+                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
+              >
+                <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
+              </button>
+            )}
           </div>
         </header>
 
