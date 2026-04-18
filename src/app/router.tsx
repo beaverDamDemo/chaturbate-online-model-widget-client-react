@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import App from '../App.tsx'
 import { RequireAdmin } from '../features/auth/require-admin.tsx'
 import { RequireAuth } from '../features/auth/require-auth.tsx'
@@ -15,8 +15,13 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
-        element: <FavoritesPage />,
+        element: <RequireAuth />,
+        children: [
+          {
+            index: true,
+            element: <FavoritesPage />,
+          },
+        ],
       },
       {
         path: 'login',

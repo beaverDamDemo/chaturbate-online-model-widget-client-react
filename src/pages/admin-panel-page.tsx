@@ -65,12 +65,7 @@ import { fetchAdminStats } from '../features/admin/fetch-admin-stats.ts'
 type StatsRecord = Record<string, unknown>
 
 export function AdminPanelPage() {
-      // Fetch dashboard stats for active models and online favorites
-      const { data: dashboardStats } = useQuery({
-        queryKey: ['dashboard-status'],
-        queryFn: fetchStatusOverview,
-        refetchInterval: 300_000,
-      });
+      // ...existing code...
     // Fetch all users for admin
     const { data: users } = useUsersQuery({
       queryKey: ['admin-users'],

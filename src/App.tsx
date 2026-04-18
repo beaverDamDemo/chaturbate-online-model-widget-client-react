@@ -1,5 +1,5 @@
 
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useTheme } from './app/theme-context.tsx'
 import { useAuth } from './features/auth/auth-context.tsx'
 
@@ -11,9 +11,11 @@ function LogOutIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+
 function App() {
   const { user, isAdmin, signOut } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
 
   return (
     <div className="theme-shell min-h-screen">
@@ -69,7 +71,10 @@ function App() {
                 </button>
                 <button
                   type="button"
-                  onClick={signOut}
+                  onClick={async () => {
+                    await signOut()
+                    navigate('/login', { replace: true })
+                  }}
                   className="secondary-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold p-0 border-none"
                   aria-label="Log out"
                   title="Log out"
