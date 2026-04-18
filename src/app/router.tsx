@@ -8,7 +8,6 @@ import { AccountPage } from '../pages/account-page.tsx'
 import { FavoritesPage } from '../pages/favorites-page.tsx'
 import { LoginPage } from '../pages/login-page.tsx'
 import { RegisterPage } from '../pages/register-page.tsx'
-import { StatusDashboardPage } from '../pages/status-dashboard-page.tsx'
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />,
+        // element: <Navigate to="/dashboard" replace />,
       },
       {
         path: 'login',
@@ -35,8 +34,8 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           {
-            path: 'dashboard',
-            element: <StatusDashboardPage />,
+            // path: 'dashboard',
+            // element: <StatusDashboardPage />,
           },
           {
             path: 'favorites',

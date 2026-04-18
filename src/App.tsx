@@ -56,7 +56,6 @@ function App() {
 
             <nav className="flex flex-wrap gap-2">
               <NavItem to="/api-test" label="API Test" />
-              <NavItem to="/dashboard" label="Dashboard" />
               <NavItem to="/favorites" label="Favorites" />
               {user ? <NavItem to="/account" label="Account" /> : null}
               {user ? <AdminNavItem isAdmin={isAdmin} /> : null}

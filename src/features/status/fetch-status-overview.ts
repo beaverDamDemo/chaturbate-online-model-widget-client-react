@@ -3,8 +3,6 @@ import { apiRequest } from '../../lib/api-client.ts';
 export type StatusOverview = {
   activeModels: number;
   onlineFavorites: number;
-  averageResponseSeconds: number;
-  conversionRate: number;
   alerts: Array<{
     id: string;
     title: string;
@@ -19,5 +17,6 @@ export type StatusOverview = {
 };
 
 export async function fetchStatusOverview(): Promise<StatusOverview> {
-  return apiRequest<StatusOverview>('/api/dashboard/status');
+  // Updated to use the admin stats endpoint
+  return apiRequest<StatusOverview>('/api/admin/stats');
 }

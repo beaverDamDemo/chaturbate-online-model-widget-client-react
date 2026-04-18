@@ -1,3 +1,4 @@
+import { fetchStatusOverview } from '../features/status/fetch-status-overview';
 import { useQuery as useUsersQuery } from '@tanstack/react-query'
 import { fetchAllUsers } from '../features/admin/fetch-users'
 import type { AdminUser } from '../features/admin/fetch-users'
@@ -64,6 +65,12 @@ import { fetchAdminStats } from '../features/admin/fetch-admin-stats.ts'
 type StatsRecord = Record<string, unknown>
 
 export function AdminPanelPage() {
+      // Fetch dashboard stats for active models and online favorites
+      const { data: dashboardStats } = useQuery({
+        queryKey: ['dashboard-status'],
+        queryFn: fetchStatusOverview,
+        refetchInterval: 300_000,
+      });
     // Fetch all users for admin
     const { data: users } = useUsersQuery({
       queryKey: ['admin-users'],
